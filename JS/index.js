@@ -1,3 +1,5 @@
+
+
 (function() {
   // get the context
 
@@ -12,7 +14,12 @@
       MapGeneration();
       this.map = map;
 
-      startingPlayer();
+
+      window.addEventListener('touchmove', function (e) {
+       gameSpace.x = e.touches[0].screenX;
+       gameSpace.y = e.touches[0].screenY;
+      });
+
       window.addEventListener("keydown", function(e) {
         e.preventDefault();
         gameSpace.keys = gameSpace.keys || [];
@@ -41,6 +48,8 @@
             this.context.beginPath();
             this.context.rect(x, y, 19, 19);
             this.context.fillStyle = "#1E9FA0";
+            //this.context.images = enemy;
+
           }
 
           this.context.fill();
@@ -50,6 +59,7 @@
         y += 20;
         x = 0;
       }
+     
       this.context.fillStyle = "#ff0000";
       this.context.rect(myPlayer.getX(), myPlayer.getY(), 19, 19);
       this.context.fill();
@@ -65,7 +75,7 @@
   var map = new Array(52).fill(null).map(() => new Array(52).fill(null));
 
   var walls = [];
-
+  
   function MapGeneration() {
     //324 available spaces inside (18 x 18)
     //border
@@ -107,7 +117,6 @@
         }
       }
     }
-    map[25][25] = "P";
   }
   //top LEFT of block = walls[i].getX
   //top RIGHT of block = walls[i].getX + wall width
@@ -210,26 +219,25 @@
     }
   }
 
-  var tempX = 0;
-  var tempY = 0;
-  function startingPlayer() {
-    for (var i = 0; i < 50; i++) {
-      tempX = 0;
-      for (var j = 0; j < 50; j++) {
-        if (map[i][j] == "P") {
-          myPlayer.setX(tempX);
-          myPlayer.setY(tempY);
-        }
-        tempX += 20;
-      }
-      tempY += 20;
-    }
-  }
+  var tempX = 20*25;
+  var tempY = 20*25;
+  
 
   function updateGameArea() {
+
     gameSpace.moveBox();
     gameSpace.clear();
     //gameSpace.speed = 0;
+    if (gameSpace.x) {
+      myPlayer.changeSpeedX(1)
+      collisionCheck(1, 0);
+    }
+    if (gameSpace.y) {
+      myPlayer.changeSpeedY(-1)
+      collisionCheck(0, -1);
+    }
+
+
     if (gameSpace.keys && gameSpace.keys[37]) {
       myPlayer.changeSpeedX(-1);
       collisionCheck(-1, 0);
