@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>MazeRunner</title>
+    <link href="css/desktop.css" media='screen and (min-width: 1024px) and (max-width: 3000px)' rel="stylesheet" type="text/css">
+    <link href="css/tablet.css" media='screen and (min-width: 768px) and (max-width: 1023px)' rel="stylesheet" type="text/css">
+    <link href="css/mobile.css" media='screen and (min-width: 300px) and (max-width: 767px)' rel="stylesheet" type="text/css">
+    
+    <style> 
+          body, html {
+          height:100%;
+          margin: 0;
+        }
+        
+        .bg {
+          /* The image used */
+          background-image: url("images/background.jpg");
+        
+          /* Full height */
+          height: 100%; 
+        
+          /* Center and scale the image nicely */
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+        }
+        </style>
+</head>
+
+<body>
+    <div class = "bg">
+        <h1>Maze Escape</h1>
+        <canvas id="myCanvas"></canvas>
+        <script src="JS/index.js" ></script>
+    </div>
+</body>
+
+</html>
