@@ -5,13 +5,13 @@
   var pixelSize = 36;
   var movementSpeed = 2;
   var myScore = 0;
- 
+
   var gameSpace = {
     canvas: document.getElementById("myCanvas"),
 
     start: function() {
 
-      
+
       var setSize = 900;
       this.canvas.width = setSize;
       this.canvas.height = setSize;
@@ -143,6 +143,8 @@
       myPlayer.setY(432);
       myScore+=1;
       console.log(myScore);
+      document.getElementById("head2").innerHTML = "Score : " + myScore;
+
     }
     for (var i = 0; i < walls.length; i++) {
       var myleft = myPlayer.getX();
@@ -281,8 +283,9 @@
   console.log(myPlayer.getX(), myPlayer.getY());
   //myPlayer.setX(25*49);
   //myPlayer.setY(25*49);
+  
+
   gameSpace.start();
-  document.getElementById("head2").innerHTML = "Score : " + myScore;
 
 })();
 
