@@ -29,7 +29,7 @@ function showNotification()  {
 
   console.log(Notification.permission);
 
-  if(Notification.permission === "granted"){
+  if(Notification.permission === "granted" && navigator == onLine){
     //alert("We have permission!");
     //showNotification();
   }
