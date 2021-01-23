@@ -2,7 +2,8 @@ var checkStatus = function(){
     if(navigator.onLine)
     {
         console.log("user is online")
-        showNotification();
+        showNotification()
+        console.log("howdy partner")
     }
     else{
         console.log("user is offline")
@@ -29,7 +30,7 @@ function showNotification()  {
 
   console.log(Notification.permission);
 
-  if(Notification.permission === "granted" && navigator == onLine){
+  if(Notification.permission === "granted"){
     //alert("We have permission!");
     //showNotification();
   }
