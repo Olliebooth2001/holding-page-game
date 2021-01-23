@@ -2,23 +2,25 @@
 
 (function() {
   // get the context
-
+  var pixelSize = 36;
+  var movementSpeed = 2;
+  var myScore = 0;
+ 
   var gameSpace = {
     canvas: document.getElementById("myCanvas"),
 
     start: function() {
-      this.canvas.width = 900;
-      this.canvas.height = 900;
+
+      
+      var setSize = 900;
+      this.canvas.width = setSize;
+      this.canvas.height = setSize;
+      var createArray = setSize/pixelSize;
       this.context = this.canvas.getContext("2d");
       this.interval = setInterval(updateGameArea, 20);
       MapGeneration();
       this.map = map;
 
-
-      window.addEventListener('touchmove', function (e) {
-       gameSpace.x = e.touches[0].screenX;
-       gameSpace.y = e.touches[0].screenY;
-      });
 
       window.addEventListener("keydown", function(e) {
         e.preventDefault();
@@ -40,28 +42,26 @@
       walls = [];
       x = 0;
       y = 0;
-      for (var i = 0; i < 50; i++) {
-        for (var j = 0; j < 50; j++) {
+      for (var i = 0; i < 25; i++) {
+        for (var j = 0; j < 25; j++) {
           if (map[i][j] == 1) {
             var myWall = new Wall(x, y);
             walls.push(myWall);
             this.context.beginPath();
-            this.context.rect(x, y, 19, 19);
-            this.context.fillStyle = "#1E9FA0";
-            //this.context.images = enemy;
-
+            this.context.rect(x, y, pixelSize - 1, pixelSize - 1);
+            this.context.fillStyle = "#5e10ec";
           }
 
           this.context.fill();
-          x += 20;
+          x += pixelSize;
         }
 
-        y += 20;
+        y += pixelSize;
         x = 0;
       }
      
       this.context.fillStyle = "#ff0000";
-      this.context.rect(myPlayer.getX(), myPlayer.getY(), 19, 19);
+      this.context.rect(myPlayer.getX(), myPlayer.getY(), pixelSize - 4, pixelSize - 4);
       this.context.fill();
     }
   };
@@ -72,14 +72,14 @@
   var dx = 0;
   var dy = 0;
 
-  var map = new Array(52).fill(null).map(() => new Array(52).fill(null));
+  var map = new Array(27).fill(null).map(() => new Array(27).fill(null));
 
   var walls = [];
   
   function MapGeneration() {
     //324 available spaces inside (18 x 18)
     //border
-    var x = 45;
+    var x = 25;
     var outside = Math.floor(x / 2);
     var half = Math.floor(x / 2 + 1);
     var last = Math.floor(x - 1);
@@ -115,8 +115,16 @@
         } else {
           map[i][j] = 0;
         }
+        
+
       }
     }
+       if(map[12][12] == 1){
+          map[12][12]=0;
+       }
+
+   // getTile: function(,)
+
   }
   //top LEFT of block = walls[i].getX
   //top RIGHT of block = walls[i].getX + wall width
@@ -128,34 +136,45 @@
   // whole of box = myleft < walls[i].getX() < myright && mytop < y < mybottom
 
   function collisionCheck(dx, dy) {
+    if(myPlayer.getX() > 900 || myPlayer.getX() < 0||myPlayer.getY()>900||myPlayer.getY()<0){
+      console.log("Out of maze");
+      MapGeneration();
+      myPlayer.setX(432);
+      myPlayer.setY(432);
+      myScore+=1;
+      console.log(myScore);
+    }
     for (var i = 0; i < walls.length; i++) {
       var myleft = myPlayer.getX();
-      var myright = myPlayer.getX() + 20;
+      var myright = myPlayer.getX() + pixelSize;
       var mytop = myPlayer.getY();
-      var mybottom = myPlayer.getY() + 20;
+      var mybottom = myPlayer.getY() + pixelSize;
+
       if (
-        walls[i].getX() < myPlayer.getX() + 20 &&
-        walls[i].getX() + 20 > myPlayer.getX() &&
-        walls[i].getY() < myPlayer.getY() + 20 &&
-        walls[i].getY() + 20 > myPlayer.getY()
+        walls[i].getX() < myPlayer.getX() + pixelSize &&
+        walls[i].getX() + pixelSize > myPlayer.getX() &&
+        walls[i].getY() < myPlayer.getY() + pixelSize &&
+        walls[i].getY() + pixelSize > myPlayer.getY()
       ) {
         //console.info("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
 
         if (dx > 0) {
-          myPlayer.changeSpeedX(-1);
+          myPlayer.changeSpeedX(-movementSpeed);
         }
         if (dx < 0) {
-          myPlayer.changeSpeedX(1);
+          myPlayer.changeSpeedX(movementSpeed);
         }
         if (dy > 0) {
-          myPlayer.changeSpeedY(-1);
+          myPlayer.changeSpeedY(-movementSpeed);
         }
         if (dy < 0) {
-          myPlayer.changeSpeedY(1);
+          myPlayer.changeSpeedY(movementSpeed);
         }
       }
     }
+  
   }
+  
 
   class Node {
     constructor(xCord, yCord) {
@@ -219,48 +238,51 @@
     }
   }
 
-  var tempX = 20*25;
-  var tempY = 20*25;
+  var tempX = pixelSize*12;//Math.floor((createArray/2));
+  var tempY = pixelSize*12;//Math.floor((createArray/2));
   
 
   function updateGameArea() {
 
+
     gameSpace.moveBox();
     gameSpace.clear();
     //gameSpace.speed = 0;
-    if (gameSpace.x) {
-      myPlayer.changeSpeedX(1)
-      collisionCheck(1, 0);
-    }
-    if (gameSpace.y) {
-      myPlayer.changeSpeedY(-1)
-      collisionCheck(0, -1);
-    }
+    // if (gameSpace.x) {
+    //   myPlayer.changeSpeedX(movementSpeed)
+    //   collisionCheck(1, 0);
+    // }
+    // if (gameSpace.y) {
+    //   myPlayer.changeSpeedY(-1)
+    //   collisionCheck(0, -1);
+    // }
 
 
     if (gameSpace.keys && gameSpace.keys[37]) {
-      myPlayer.changeSpeedX(-1);
-      collisionCheck(-1, 0);
+      myPlayer.changeSpeedX(-movementSpeed);
+      collisionCheck(-movementSpeed, 0);
     }
     if (gameSpace.keys && gameSpace.keys[39]) {
-      myPlayer.changeSpeedX(1);
-      collisionCheck(1, 0);
+      myPlayer.changeSpeedX(movementSpeed);
+      collisionCheck(movementSpeed, 0);
     }
     if (gameSpace.keys && gameSpace.keys[38]) {
-      myPlayer.changeSpeedY(-1);
-      collisionCheck(0, -1);
+      myPlayer.changeSpeedY(-movementSpeed);
+      collisionCheck(0, -movementSpeed);
     }
     if (gameSpace.keys && gameSpace.keys[40]) {
-      myPlayer.changeSpeedY(1);
-      collisionCheck(0, 1);
+      myPlayer.changeSpeedY(movementSpeed);
+      collisionCheck(0, movementSpeed);
     }
     gameSpace.moveBox();
   }
   var myPlayer = new Player(tempX, tempY, 0);
 
-  
+  console.log(myPlayer.getX(), myPlayer.getY());
   //myPlayer.setX(25*49);
   //myPlayer.setY(25*49);
-
   gameSpace.start();
+  document.getElementById("head2").innerHTML = "Score : " + myScore;
+
 })();
+

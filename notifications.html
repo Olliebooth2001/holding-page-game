@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>Notifications in HTML5 with SSaurel</title>
+<style type="text/css">
+  button {
+  	display : block;
+  	margin : 0 auto;
+  	margin-top : 200px;
+  	padding : 16px 20px;
+  	border : none;
+  	background : #2B3542;
+  	color : #FFF;
+  	border-radius : 30px;
+  	font-weight : bold;
+  	font-size : 20px;
+  }
+  
+  button:hover {
+  	background : red;
+  	cursor : pointer;
+  }
+</style>
+<script type="text/javascript">
+	var notificationsEnabled = false;
+	
+	function initNotifications() {
+		if (window.Notification) {
+			Notification.requestPermission(function(permission) {
+				if (permission === 'granted') {
+					notificationsEnabled = true;
+				} else {
+					alert("You denied Notifications, it's so sad :(");
+				}
+			});
+		} else {
+			alert("Your browser doesn't support Notifications API");
+		}
+	}
+	
+	function showNotification() {
+		if (notificationsEnabled) {
+			var notification = new Notification("Oh hello there", {
+				body : 'You clicked on the button !',
+			});
+			
+			setTimeout(function() { notification.close(); }, 5000);
+		} else {
+			alert("Notifications are disabled");
+		}
+	}
+</script>
+</head>
+<body onload="initNotifications()">
+	<button onclick="showNotification()">Show Notification</button>
+</body>
+</html>
+
+

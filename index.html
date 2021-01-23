@@ -7,13 +7,28 @@
     <link href="css/desktop.css" media='screen and (min-width: 1024px) and (max-width: 3000px)' rel="stylesheet" type="text/css">
     <link href="css/tablet.css" media='screen and (min-width: 768px) and (max-width: 1023px)' rel="stylesheet" type="text/css">
     <link href="css/mobile.css" media='screen and (min-width: 300px) and (max-width: 767px)' rel="stylesheet" type="text/css">
+
     
     <style> 
           body, html {
           height:100%;
           margin: 0;
         }
-        
+        .twitter-feed{
+          padding-left: 10px;
+          position: absolute;
+          width: 25%;
+          bottom: 10px;
+          border-radius: 3%;
+          background-color: black;
+        }
+        #wifi {
+          right: 10px;
+          position: absolute;
+          bottom: 10px;
+          border-radius: 3%;
+          background-color: black;
+        }
         .bg {
           /* The image used */
           background-image: url("images/background.jpg");
@@ -26,15 +41,62 @@
           background-repeat: no-repeat;
           background-size: cover;
         }
+        .scoreBox{
+          right: 10px;
+          position: absolute;
+          top: 10px;
+          border-radius: 3%;
+          background-color: transparent;
+        }
+        
         </style>
 </head>
 
 <body>
     <div class = "bg">
-        <h1>Maze Escape</h1>
+      <div class = "scoreBox">
+        <h1 id = "head2">Score : </h1>
+      </div>
+        <img class = "mazeTitle" src="images/maze.png"width = "300" height="220" >
         <canvas id="myCanvas"></canvas>
         <script src="JS/index.js" ></script>
     </div>
+    <div class = "twitter-feed">
+      <a class="twitter-timeline" data-width="400" data-height="450" data-theme="dark" href="https://twitter.com/SkyBet?ref_src=twsrc%5Etfw">Tweets by SkyBet</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>      
+      <script src="JS/wifiStatus.js" ></script>
+    </div>
+
+    <script>
+
+      function showNotification()  {
+        const notification = new Notification("New message from ollie",{
+          body:"heya mate u okay"
+
+        });
+
+      }
+
+
+
+      console.log(Notification.permission);
+
+      if(Notification.permission === "granted"){
+        //alert("We have permission!");
+        showNotification();
+      }
+      else if(Notification.permission !== "denied"){
+        Notification.requestPermission().then(permission=>{
+
+          if(permission === "granted"){
+            showNotification();
+          }
+
+        });
+      }
+
+       
+    </script>
+   
 </body>
 
 </html>
