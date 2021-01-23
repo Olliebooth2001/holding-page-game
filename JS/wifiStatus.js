@@ -19,9 +19,9 @@ window.addEventListener("offline", function(){
 
 
 function showNotification()  {
-    const notification = new Notification("New message from ollie",{
-      body:"heya mate u okay"
-
+    const notification = new Notification("SkyBet",{
+      body:"Network connection is back online",
+      icon:"https://www.picks.org/wp-content/uploads/2017/01/skybet-logo.png"  
     });
 
   }
