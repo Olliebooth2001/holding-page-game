@@ -15,3 +15,29 @@ window.addEventListener("offline", function(){
     checkStatus()
 })
 
+
+function showNotification()  {
+    const notification = new Notification("New message from ollie",{
+      body:"heya mate u okay"
+
+    });
+
+  }
+
+
+
+  console.log(Notification.permission);
+
+  if(Notification.permission === "granted"){
+    //alert("We have permission!");
+    showNotification();
+  }
+  else if(Notification.permission !== "denied"){
+    Notification.requestPermission().then(permission=>{
+
+      if(permission === "granted"){
+        showNotification();
+      }
+
+    });
+  }
