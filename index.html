@@ -20,7 +20,6 @@
           width: 25%;
           bottom: 10px;
           border-radius: 3%;
-          background-color: black;
         }
         #wifi {
           right: 10px;
@@ -42,17 +41,26 @@
           background-size: cover;
         }
         .scoreBox{
+          background-color: aliceblue;
           right: 10px;
           position: absolute;
           top: 10px;
           border-radius: 3%;
           background-color: transparent;
           font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-          color: white;
+          color: #ff3545;
           font-size: large;
+          font-weight: 600;
         }
-        
-        
+      
+        .gameOver{
+          left: 10%;
+          top: 10%;
+          background-color: aqua;
+          height: 500px;
+          width: 500px;
+          margin:0 auto;
+        }
         </style>
 </head>
 
@@ -60,12 +68,13 @@
     <div class = "bg">
       <div class = "scoreBox">
         <h1 id = "head2">Score : 0</h1>
-        <h1 id = "head3">Time : 20</h1>
+        <h1 id = "head3">Time : 15</h1>
       </div>
         <img class = "mazeTitle" src="images/maze.png"width = "300" height="220" >
         <canvas id="myCanvas"></canvas>
         <script src="JS/index.js" ></script>
     </div>
+   <div class ="gameOver"></div>
     <div class = "twitter-feed">
       <a class="twitter-timeline" data-width="400" data-height="450" data-theme="dark" href="https://twitter.com/SkyBet?ref_src=twsrc%5Etfw">Tweets by SkyBet</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>      
       <script src="JS/wifiStatus.js" ></script>
@@ -74,3 +83,20 @@
 </body>
 
 </html>
+
+
+<div class="bg-modal">
+  <div class="modal-content">
+
+    <div class="close">+</div>
+    <img src="images/skybet-logo.png" width="100px" height="100px" alt="image unavailable">
+
+    <form action="">
+      <h4 id = "head4">Unlucky! you scored : </h4>
+      <h4 id = "head5"><br>Your high score : </h4>
+      <input type="text" placeholder="Name">
+      <input type="text" placeholder="E-mail">
+      <a href=""class = "button">R E T R Y</a>
+    </form>
+  </div>
+</div>

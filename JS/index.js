@@ -5,13 +5,14 @@
   var pixelSize = 36;
   var movementSpeed = 2;
   var myScore = 0;
+  var seconds =16;
+  var mySound;
+  var gameMusic;
 
   var gameSpace = {
     canvas: document.getElementById("myCanvas"),
 
     start: function() {
-
-
       var setSize = 900;
       this.canvas.width = setSize;
       this.canvas.height = setSize;
@@ -20,7 +21,8 @@
       this.interval = setInterval(updateGameArea, 20);
       MapGeneration();
       this.map = map;
-
+      mySound = new sound("music/gameOver.mp3");
+      gameMusic = new sound("music/thememusic1.mp3");
 
       window.addEventListener("keydown", function(e) {
         e.preventDefault();
@@ -65,6 +67,20 @@
       this.context.fill();
     }
   };
+  function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
+    this.stop = function(){
+        this.sound.pause();
+    }    
+}
 
   var x = 0;
   var y = 0;
@@ -75,6 +91,7 @@
   var map = new Array(27).fill(null).map(() => new Array(27).fill(null));
 
   var walls = [];
+
   
   function MapGeneration() {
     //324 available spaces inside (18 x 18)
@@ -134,16 +151,24 @@
   // x is any part of the player
 
   // whole of box = myleft < walls[i].getX() < myright && mytop < y < mybottom
+  var countdown = setInterval(function() {
+    seconds--;
+    document.getElementById("head3").textContent ="Time : "+ seconds;
+    if (seconds <= 0) clearInterval(countdown);
+  }, 1000);
 
   function collisionCheck(dx, dy) {
+    
     if(myPlayer.getX() > 900 || myPlayer.getX() < 0||myPlayer.getY()>900||myPlayer.getY()<0){
       console.log("Out of maze");
       MapGeneration();
       myPlayer.setX(432);
       myPlayer.setY(432);
-      myScore+=1;
+      myScore+=seconds;
       console.log(myScore);
       document.getElementById("head2").innerHTML = "Score : " + myScore;
+
+      seconds = 16; 
 
     }
     for (var i = 0; i < walls.length; i++) {
@@ -242,41 +267,85 @@
 
   var tempX = pixelSize*12;//Math.floor((createArray/2));
   var tempY = pixelSize*12;//Math.floor((createArray/2));
-  
+
 
   function updateGameArea() {
+    document.getElementById("head2").style.textShadow = "2px 2px 1px #5e10ec";
+
+    if(seconds !=0){
+      //gameMusic.play();
+
+      gameSpace.moveBox();
+      gameSpace.clear();
+      if (seconds <=5){ 
+        if(seconds %2!=0){
+          document.getElementById("head3").style.color = "#ff3545";
+          document.getElementById("head3").style.textShadow = "1px 1px 1px #ff3545";
 
 
-    gameSpace.moveBox();
-    gameSpace.clear();
-    //gameSpace.speed = 0;
-    // if (gameSpace.x) {
-    //   myPlayer.changeSpeedX(movementSpeed)
-    //   collisionCheck(1, 0);
-    // }
-    // if (gameSpace.y) {
-    //   myPlayer.changeSpeedY(-1)
-    //   collisionCheck(0, -1);
-    // }
+        }
+        else{
+          document.getElementById("head3").style.textShadow = "2px 2px 1px #5e10ec";
+
+        }
+        
 
 
-    if (gameSpace.keys && gameSpace.keys[37]) {
-      myPlayer.changeSpeedX(-movementSpeed);
-      collisionCheck(-movementSpeed, 0);
+      }else{
+        document.getElementById("head3").style.color = "#ff3545";
+        document.getElementById("head3").style.textShadow = "2px 2px 1px #5e10ec";
+
+      }
+  
+      if (gameSpace.keys && gameSpace.keys[37]) {
+        myPlayer.changeSpeedX(-movementSpeed);
+        collisionCheck(-movementSpeed, 0);
+      }
+      if (gameSpace.keys && gameSpace.keys[39]) {
+        myPlayer.changeSpeedX(movementSpeed);
+        collisionCheck(movementSpeed, 0);
+      }
+      if (gameSpace.keys && gameSpace.keys[38]) {
+        myPlayer.changeSpeedY(-movementSpeed);
+        collisionCheck(0, -movementSpeed);
+      }
+      if (gameSpace.keys && gameSpace.keys[40]) {
+        myPlayer.changeSpeedY(movementSpeed);
+        collisionCheck(0, movementSpeed);
+      }
+      gameSpace.moveBox();
     }
-    if (gameSpace.keys && gameSpace.keys[39]) {
-      myPlayer.changeSpeedX(movementSpeed);
-      collisionCheck(movementSpeed, 0);
+    
+
+    
+    else if(seconds == 0){
+      gameMusic.stop();
+      mySound.play();
+      document.querySelector('.bg-modal').style.display = 'flex';
+      
+      if(typeof(Storage)!=="undefined"){
+
+        if(localStorage.getItem("Score")==0){
+          localStorage.setItem("Score", myScore);
+        }
+        if(localStorage.getItem("Score")> myScore){
+          document.getElementById("head4").innerHTML = "Unlucky! you scored : " + myScore;
+        }
+      
+        if(localStorage.getItem("Score")<myScore){
+          localStorage.setItem("Score", myScore);
+          document.getElementById("head4").innerHTML = "Nice! thats a high score";
+
+        }
+        
+      }
+
+      document.getElementById("head5").innerHTML = "Your high score : " + localStorage.getItem("Score");
+      document.querySelector('.close').addEventListener('click',function(){
+        document.querySelector('.bg-modal').style.display = 'none';
+      });
     }
-    if (gameSpace.keys && gameSpace.keys[38]) {
-      myPlayer.changeSpeedY(-movementSpeed);
-      collisionCheck(0, -movementSpeed);
-    }
-    if (gameSpace.keys && gameSpace.keys[40]) {
-      myPlayer.changeSpeedY(movementSpeed);
-      collisionCheck(0, movementSpeed);
-    }
-    gameSpace.moveBox();
+   
   }
   var myPlayer = new Player(tempX, tempY, 0);
 
