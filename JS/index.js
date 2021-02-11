@@ -1,5 +1,6 @@
 
 
+
 (function() {
   // get the context
   var pixelSize = 36;
@@ -8,6 +9,8 @@
   var seconds =16;
   var mySound;
   var gameMusic;
+  var cont = false;
+
 
   var gameSpace = {
     canvas: document.getElementById("myCanvas"),
@@ -141,8 +144,9 @@
        }
 
    // getTile: function(,)
-
   }
+  
+  
   //top LEFT of block = walls[i].getX
   //top RIGHT of block = walls[i].getX + wall width
   //top of block = area between top left and top right so walls[i].getX() < x < walls[i].getX + wall width
@@ -152,11 +156,14 @@
 
   // whole of box = myleft < walls[i].getX() < myright && mytop < y < mybottom
   var countdown = setInterval(function() {
-    seconds--;
+    
+    if(cont == true){
+      seconds--;
+    }
     document.getElementById("head3").textContent ="Time : "+ seconds;
     if (seconds <= 0) clearInterval(countdown);
   }, 1000);
-
+  
   function collisionCheck(dx, dy) {
     
     if(myPlayer.getX() > 900 || myPlayer.getX() < 0||myPlayer.getY()>900||myPlayer.getY()<0){
@@ -274,6 +281,10 @@
 
     if(seconds !=0){
       //gameMusic.play();
+      document.querySelector('.close').addEventListener('click',function(){
+        document.querySelector('.op-modal').style.display = 'none';
+        cont = true;
+      });
 
       gameSpace.moveBox();
       gameSpace.clear();
@@ -281,16 +292,10 @@
         if(seconds %2!=0){
           document.getElementById("head3").style.color = "#ff3545";
           document.getElementById("head3").style.textShadow = "1px 1px 1px #ff3545";
-
-
         }
         else{
           document.getElementById("head3").style.textShadow = "2px 2px 1px #5e10ec";
-
         }
-        
-
-
       }else{
         document.getElementById("head3").style.color = "#ff3545";
         document.getElementById("head3").style.textShadow = "2px 2px 1px #5e10ec";
@@ -322,28 +327,27 @@
       gameMusic.stop();
       mySound.play();
       document.querySelector('.bg-modal').style.display = 'flex';
+      document.getElementById("head4").innerHTML = "You scored : " + myScore + "!";
+
       
       if(typeof(Storage)!=="undefined"){
 
-        if(localStorage.getItem("Score")==0){
-          localStorage.setItem("Score", myScore);
+        if(localStorage.getItem("highScore")==0){
+          localStorage.setItem("highScore", myScore);
         }
-        if(localStorage.getItem("Score")> myScore){
-          document.getElementById("head4").innerHTML = "Unlucky! you scored : " + myScore;
-        }
-      
-        if(localStorage.getItem("Score")<myScore){
-          localStorage.setItem("Score", myScore);
+                
+        if(localStorage.getItem("highScore")<myScore){
+          localStorage.setItem("highScore", myScore);
           document.getElementById("head4").innerHTML = "Nice! thats a high score";
-
         }
-        
-      }
+        document.getElementById("head6").innerHTML = "Your high score : " + localStorage.getItem("highScore");
 
-      document.getElementById("head5").innerHTML = "Your high score : " + localStorage.getItem("Score");
+      }
+      
       document.querySelector('.close').addEventListener('click',function(){
         document.querySelector('.bg-modal').style.display = 'none';
       });
+      
     }
    
   }

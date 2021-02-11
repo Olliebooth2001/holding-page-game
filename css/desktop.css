@@ -19,25 +19,30 @@
     padding-top: 10px;
     padding-bottom: 10px;
   }
-.box{
-    width: 400px;
-    height: 500px;
-    border:1px solid black;
-    border-radius: 10%;
-    background: linear-gradient(to right,red 0%, red 100%);
+
+.op-modal{   
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,0.7);
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    margin:0 auto;
+    top:0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
 }
-.box:hover{
-    background: linear-gradient(to right,blue 0%, red 100%);
+.opmodal-content {
+
+    width: 500px;
+    height: 300px;
+    background-color: white;
+    border-radius: 7px;
+    text-align: center;
+    padding: 20px;
+    position: relative;
 }
 
 .bg-modal{
-
-    
     width:100%;
     height:100%;
     background-color:rgba(0,0,0,0.7);
@@ -47,7 +52,6 @@
     justify-content: center;
     align-items: center;
     display: none;
-
 }
 .modal-content {
 
@@ -65,14 +69,22 @@ input{
     margin: 15px auto;
 }
 .close{
-    position: absolute;
-    top: 0;
-    right: 14px;
-    font-size:42px;
-    transform: rotate(45deg);
+    font-family: fantasy;
+	border: 2px solid white;
+	border-radius: 30px;
+	text-decoration: none;
+	padding: 10px 28px;
+	margin-top: 10px;
+	display: inline-block;
+    background-color: white;
+    color: #ff3545;
+    border: 2px solid #ff3545;
     cursor: pointer;
 }
-
+.close:hover{
+    background-color: #ff3545;
+    color: white;
+}
 .button {
     font-family: fantasy;
 	border: 2px solid white;
@@ -84,7 +96,7 @@ input{
     background-color: white;
     color: #ff3545;
     border: 2px solid #ff3545;
-        
+    cursor: pointer;
 }
 .button:hover{
     background-color: #ff3545;
