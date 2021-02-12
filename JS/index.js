@@ -290,15 +290,19 @@
       gameSpace.clear();
       if (seconds <=5){ 
         if(seconds %2!=0){
-          document.getElementById("head3").style.color = "#ff3545";
-          document.getElementById("head3").style.textShadow = "1px 1px 1px #ff3545";
+          document.querySelector('.oft').style.display = 'flex';
+          // document.getElementById("head3").style.color = "#ff3545";
+          // document.getElementById("head3").style.textShadow = "1px 1px 1px #ff3545";
         }
         else{
-          document.getElementById("head3").style.textShadow = "2px 2px 1px #5e10ec";
+          // document.getElementById("head3").style.textShadow = "2px 2px 1px #5e10ec";
+          document.querySelector('.oft').style.display = 'none';
+
         }
       }else{
         document.getElementById("head3").style.color = "#ff3545";
         document.getElementById("head3").style.textShadow = "2px 2px 1px #5e10ec";
+        document.querySelector('.oft').style.display = 'none';
 
       }
   
@@ -324,12 +328,11 @@
 
     
     else if(seconds == 0){
+      document.querySelector('.oft').style.display = 'none';
       gameMusic.stop();
       mySound.play();
       document.querySelector('.bg-modal').style.display = 'flex';
       document.getElementById("head4").innerHTML = "You scored : " + myScore + "!";
-
-      
       if(typeof(Storage)!=="undefined"){
 
         if(localStorage.getItem("highScore")==0){
