@@ -11,11 +11,11 @@
   var gameMusic;
   var cont = false;
 
-
   var gameSpace = {
     canvas: document.getElementById("myCanvas"),
 
     start: function() {
+
       var setSize = 900;
       this.canvas.width = setSize;
       this.canvas.height = setSize;
@@ -26,6 +26,7 @@
       this.map = map;
       mySound = new sound("music/gameOver.mp3");
       gameMusic = new sound("music/thememusic1.mp3");
+      
 
       window.addEventListener("keydown", function(e) {
         e.preventDefault();
@@ -163,6 +164,12 @@
     document.getElementById("head3").textContent ="Time : "+ seconds;
     if (seconds <= 0) clearInterval(countdown);
   }, 1000);
+  var ifConnected = window.navigator.onLine;
+  if (ifConnected) {
+    document.getElementById('wifiSymbol').src='images/wifi.png';
+  } else {
+    document.getElementById('wifiSymbol').src='images/nowifi.png';
+  } 
   
   function collisionCheck(dx, dy) {
     
@@ -355,7 +362,9 @@
    
   }
   var myPlayer = new Player(tempX, tempY, 0);
-
+  if(document.getElementById("serverStat").src == "https://bet.sbgcdn.com/static/mbet/img/content/logos/skybet-rebrand.png"){
+    document.getElementById("serverSymbol").src='images/serverON.png';
+  }
   console.log(myPlayer.getX(), myPlayer.getY());
   //myPlayer.setX(25*49);
   //myPlayer.setY(25*49);

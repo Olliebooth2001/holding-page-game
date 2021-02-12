@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>DRIP</title>
+    <link href="css/blood.css" rel="stylesheet" type="text/css">
+        
+</head>
+
+    <body>
+       <div class="container">
+            <div class="drip"></div>
+            <div class="drip"></div>
+            <div class="drip"></div>
+            <div class="drip"></div>
+            <div class="drip"></div>
+            <div class="drip"></div>
+            <div class="drip"></div>
+            <div class="drip"></div>
+            <div class="drip"></div>
+            <div class="drip"></div>
+            <div class="drip"></div>
+            <div class="drip"></div>
+            <div class="drip"></div>
+            <div class="border"></div>
+            <div class="border"></div>
+       </div>
+       <svg>
+            <defs>
+                <filter id = 'drip'>
+                    <feGaussianBlur in = "SourceGraphic" stdDeviation = '10'/>
+                    <feColorMatrix in = 'name' mode= 'matrix' values ='1 0 0 0 0
+                                                                        0 1 0 0 0
+                                                                        0 0 1 0 0
+                                                                        0 0 0 40 -15'/>
+                    <feBlend in = 'SourceGraphic'/>                                       
+                </filter>
+            </defs>
+
+       </svg>
+        
+    </body>
+</html>
