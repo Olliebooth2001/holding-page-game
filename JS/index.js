@@ -1,6 +1,3 @@
-
-
-
 (function() {
   // get the context
   var pixelSize = 36;
@@ -10,24 +7,40 @@
   var mySound;
   var gameMusic;
   var cont = false;
+  var myGamePiece;
+  var moving = false;
 
+
+
+  let playerImg = new Image();
+  playerImg.src = 'images/openC.png';
+
+  let closedEye = new Image();
+  closedEye.src = 'images/closeC.png';
+
+  let grass = new Image();
+  grass.src = 'images/pixelGrass.png'
+  let brick = new Image();
+  brick.src ='images/walls.png';
+  
   var gameSpace = {
     canvas: document.getElementById("myCanvas"),
 
     start: function() {
-
+      
       var setSize = 900;
       this.canvas.width = setSize;
       this.canvas.height = setSize;
       var createArray = setSize/pixelSize;
       this.context = this.canvas.getContext("2d");
       this.interval = setInterval(updateGameArea, 20);
+      
+     
       MapGeneration();
       this.map = map;
       mySound = new sound("music/gameOver.mp3");
       gameMusic = new sound("music/thememusic1.mp3");
-      
-
+  
       window.addEventListener("keydown", function(e) {
         e.preventDefault();
         gameSpace.keys = gameSpace.keys || [];
@@ -54,10 +67,16 @@
             var myWall = new Wall(x, y);
             walls.push(myWall);
             this.context.beginPath();
-            this.context.rect(x, y, pixelSize - 1, pixelSize - 1);
-            this.context.fillStyle = "#5e10ec";
-          }
+            // this.context.rect(x, y, pixelSize - 1, pixelSize - 1);
+            // this.context.fillStyle = "#5e10ec";
 
+            this.context.drawImage(brick,x, y, pixelSize - 1, pixelSize - 1);
+          }   
+          else if(map[i][j] == 0){
+            this.context.beginPath();
+            this.context.drawImage(grass,x, y, pixelSize - 1, pixelSize - 1);
+
+          }       
           this.context.fill();
           x += pixelSize;
         }
@@ -66,9 +85,18 @@
         x = 0;
       }
      
-      this.context.fillStyle = "#ff0000";
-      this.context.rect(myPlayer.getX(), myPlayer.getY(), pixelSize - 4, pixelSize - 4);
-      this.context.fill();
+      // this.context.fillStyle = "#ff0000";
+      // this.context.rect(myPlayer.getX(), myPlayer.getY(), pixelSize - 4, pixelSize - 4);
+      if(seconds % 2 ==0){
+        this.context.drawImage(playerImg,myPlayer.getX(), myPlayer.getY(), pixelSize - 4, pixelSize - 4);
+        this.context.fill();
+      }
+      else{ 
+        this.context.drawImage(closedEye,myPlayer.getX(), myPlayer.getY(), pixelSize - 4, pixelSize - 4);
+        this.context.fill();
+      }
+      
+      
     }
   };
   function sound(src) {
@@ -85,7 +113,6 @@
         this.sound.pause();
     }    
 }
-
   var x = 0;
   var y = 0;
 
@@ -155,6 +182,7 @@
 
   // x is any part of the player
 
+  
   // whole of box = myleft < walls[i].getX() < myright && mytop < y < mybottom
   var countdown = setInterval(function() {
     
@@ -284,7 +312,10 @@
 
 
   function updateGameArea() {
+   
     document.getElementById("head2").style.textShadow = "2px 2px 1px #5e10ec";
+
+      
 
     if(seconds !=0){
       //gameMusic.play();
@@ -298,13 +329,10 @@
       if (seconds <=5){ 
         if(seconds %2!=0){
           document.querySelector('.oft').style.display = 'flex';
-          // document.getElementById("head3").style.color = "#ff3545";
-          // document.getElementById("head3").style.textShadow = "1px 1px 1px #ff3545";
+         
         }
         else{
-          // document.getElementById("head3").style.textShadow = "2px 2px 1px #5e10ec";
           document.querySelector('.oft').style.display = 'none';
-
         }
       }else{
         document.getElementById("head3").style.color = "#ff3545";
@@ -368,7 +396,7 @@
   console.log(myPlayer.getX(), myPlayer.getY());
   //myPlayer.setX(25*49);
   //myPlayer.setY(25*49);
-  
+ 
 
   gameSpace.start();
 

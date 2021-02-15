@@ -7,13 +7,44 @@
         
 </head>
 
-    <body>
-       
-            <div class = "box">
-                <input type="text" id="fname" name="fname" value="John"><br>
+<body>
 
-
-            </div>
-        
+    <div class="w3-container">
+      <h2>Dynamic Progress Bar with Labels</h2>
+      <p>Label outside of the progress bar:</p>
+    
+      <div class="w3-light-grey">
+        <div id="myBar" class="w3-container w3-green" style="height:24px;width:0%">
+        </div>
+      </div>
+    
+      <p id="myP">Added <span id="demo">0</span> of 10 photos</p>
+    
+      <button class="w3-button w3-light-grey" onclick="move();this.disabled='true'">Upload Photos</button> 
+    </div>
+    
+    <script>
+    function move() {
+      var elem = document.getElementById("myBar");   
+      var width = 0;
+      var id = setInterval(frame, 50);
+      function frame() {
+        if (width >= 100) {
+          clearInterval(id);
+          document.getElementById("myP").className = "w3-text-green w3-animate-opacity";
+          document.getElementById("myP").innerHTML = "Successfully uploaded 10 photos!";
+        } else {
+          width++; 
+          elem.style.width = width + '%'; 
+          var num = width * 1 / 10;
+          num = num.toFixed(0)
+          document.getElementById("demo").innerHTML = num;
+        }
+      }
+    }
+    </script>
+    
     </body>
+    </html>
+    
 </html>
