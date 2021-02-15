@@ -8,8 +8,16 @@
   var gameMusic;
   var cont = false;
   var myGamePiece;
-  var moving = false;
+  var setScale = false;
+  var translateY = -800;
+  var translateX = -800;
 
+  const canvas= document.getElementById("myCanvas");
+  const context = canvas.getContext("2d");
+
+  var setSize = 900;
+  canvas.width = setSize;
+  canvas.height = setSize;
 
 
   let playerImg = new Image();
@@ -24,16 +32,13 @@
   brick.src ='images/walls.png';
   
   var gameSpace = {
-    canvas: document.getElementById("myCanvas"),
-
+   
+    
     start: function() {
-      
-      var setSize = 900;
-      this.canvas.width = setSize;
-      this.canvas.height = setSize;
+     
       var createArray = setSize/pixelSize;
-      this.context = this.canvas.getContext("2d");
       this.interval = setInterval(updateGameArea, 20);
+      
       
      
       MapGeneration();
@@ -54,10 +59,11 @@
       clearInterval(this.interval);
     },
     clear: function() {
-      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      context.clearRect(0, 0, canvas.width, canvas.height);
     },
     moveBox: function() {
       //context.clearRect()
+     
       walls = [];
       x = 0;
       y = 0;
@@ -66,18 +72,18 @@
           if (map[i][j] == 1) {
             var myWall = new Wall(x, y);
             walls.push(myWall);
-            this.context.beginPath();
-            // this.context.rect(x, y, pixelSize - 1, pixelSize - 1);
-            // this.context.fillStyle = "#5e10ec";
+            context.beginPath();
+            // context.rect(x, y, pixelSize - 1, pixelSize - 1);
+            // context.fillStyle = "#5e10ec";
 
-            this.context.drawImage(brick,x, y, pixelSize - 1, pixelSize - 1);
+            context.drawImage(brick,x, y, pixelSize - 1, pixelSize - 1);
           }   
           else if(map[i][j] == 0){
-            this.context.beginPath();
-            this.context.drawImage(grass,x, y, pixelSize - 1, pixelSize - 1);
+            context.beginPath();
+            context.drawImage(grass,x, y, pixelSize - 1, pixelSize - 1);
 
           }       
-          this.context.fill();
+          context.fill();
           x += pixelSize;
         }
 
@@ -85,15 +91,15 @@
         x = 0;
       }
      
-      // this.context.fillStyle = "#ff0000";
-      // this.context.rect(myPlayer.getX(), myPlayer.getY(), pixelSize - 4, pixelSize - 4);
+      // context.fillStyle = "#ff0000";
+      // context.rect(myPlayer.getX(), myPlayer.getY(), pixelSize - 4, pixelSize - 4);
       if(seconds % 2 ==0){
-        this.context.drawImage(playerImg,myPlayer.getX(), myPlayer.getY(), pixelSize - 4, pixelSize - 4);
-        this.context.fill();
+        context.drawImage(playerImg,myPlayer.getX(), myPlayer.getY(), pixelSize - 4, pixelSize - 4);
+        context.fill();
       }
       else{ 
-        this.context.drawImage(closedEye,myPlayer.getX(), myPlayer.getY(), pixelSize - 4, pixelSize - 4);
-        this.context.fill();
+        context.drawImage(closedEye,myPlayer.getX(), myPlayer.getY(), pixelSize - 4, pixelSize - 4);
+        context.fill();
       }
       
       
@@ -112,7 +118,7 @@
     this.stop = function(){
         this.sound.pause();
     }    
-}
+ }
   var x = 0;
   var y = 0;
 
@@ -315,7 +321,13 @@
    
     document.getElementById("head2").style.textShadow = "2px 2px 1px #5e10ec";
 
-      
+    context.translate(myPlayer.getX()+translateX,myPlayer.getY()+translateY);
+    
+    
+    if(setScale == false){
+      context.scale(2,2);
+      setScale = true;
+    }
 
     if(seconds !=0){
       //gameMusic.play();
@@ -344,19 +356,29 @@
       if (gameSpace.keys && gameSpace.keys[37]) {
         myPlayer.changeSpeedX(-movementSpeed);
         collisionCheck(-movementSpeed, 0);
+        translateX -=1;
+      
+
       }
       if (gameSpace.keys && gameSpace.keys[39]) {
         myPlayer.changeSpeedX(movementSpeed);
         collisionCheck(movementSpeed, 0);
+        translateX +=50;
+
       }
       if (gameSpace.keys && gameSpace.keys[38]) {
         myPlayer.changeSpeedY(-movementSpeed);
         collisionCheck(0, -movementSpeed);
+        translateX +=50;
+
       }
       if (gameSpace.keys && gameSpace.keys[40]) {
         myPlayer.changeSpeedY(movementSpeed);
         collisionCheck(0, movementSpeed);
+        translateX +=50;
+
       }
+     
       gameSpace.moveBox();
     }
     
@@ -396,9 +418,10 @@
   console.log(myPlayer.getX(), myPlayer.getY());
   //myPlayer.setX(25*49);
   //myPlayer.setY(25*49);
- 
-
+  
+  
   gameSpace.start();
+
 
 })();
 
