@@ -16,7 +16,7 @@
   const canvas= document.getElementById("myCanvas");
   const context = canvas.getContext("2d");
 
-  context.fillStyle = "#ff0000";
+  context.fillStyle = "#000000";
   context.fillRect(0, 0, canvas.width, canvas.height);
 
   var setSize = 900;
@@ -245,6 +245,38 @@
       translateY = -225
       seconds = 16; 
 
+    }
+    for (var i = 0; i < oils.length; i++) {
+      var myleft = myPlayer.getX();
+      var myright = myPlayer.getX() + pixelSize;
+      var mytop = myPlayer.getY();
+      var mybottom = myPlayer.getY() + pixelSize;
+
+      if (
+        oils[i].getX() < myPlayer.getX() + pixelSize &&
+        oils[i].getX() + pixelSize > myPlayer.getX() &&
+        oils[i].getY() < myPlayer.getY() + pixelSize &&
+        oils[i].getY() + pixelSize > myPlayer.getY()
+      ) {
+        //console.info("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+
+        if (dx > 0) {
+          myPlayer.changeSpeedX(-movementSpeed);
+          translateX += 2;
+        }
+        if (dx < 0) {
+          myPlayer.changeSpeedX(movementSpeed);
+          translateX -= 2;
+        }
+        if (dy > 0) {
+          myPlayer.changeSpeedY(-movementSpeed);
+          translateY += 2;
+        }
+        if (dy < 0) {
+          myPlayer.changeSpeedY(movementSpeed);
+          translateY -= 2;
+        }
+      }
     }
     for (var i = 0; i < walls.length; i++) {
       var myleft = myPlayer.getX();
