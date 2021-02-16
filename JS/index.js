@@ -89,6 +89,7 @@
           else if(map[i][j] == 3){
             var myOil = new Oil(x,y);
             oils.push(myOil);
+
             context.beginPath();
             context.drawImage(oilSlick,x, y, pixelSize - 1, pixelSize - 1);
 
@@ -96,8 +97,11 @@
           else if(map[i][j] == 0){
             context.beginPath();
             context.drawImage(grass,x, y, pixelSize - 1, pixelSize - 1);
-
-          }       
+          }      
+          else if(map[i][j] == null){
+            context.beginPath();
+            context.drawImage(grass,x, y, pixelSize - 1, pixelSize - 1);
+          }    
             
           context.fill();
           x += pixelSize;
@@ -141,7 +145,7 @@
   var dx = 0;
   var dy = 0;
 
-  var map = new Array(27).fill(null).map(() => new Array(27).fill(null));
+  var map = new Array(51).fill(null).map(() => new Array(51).fill(null));
 
   var walls = [];
 
@@ -149,7 +153,7 @@
   function MapGeneration() {
     //324 available spaces inside (18 x 18)
     //border
-    var x = 25;
+    var x = 50;
     var outside = Math.floor(x / 2);
     var half = Math.floor(x / 2 + 1);
     var last = Math.floor(x - 1);
@@ -195,13 +199,20 @@
         else {
           map[i][j] = 0;
         }
-        
-
       }
     }
-       if(map[12][12] == 1){
-          map[12][12]=0;
-       }
+       
+         for(var i = 11;i<13;i++){
+          map[i][12] = 0;
+          map[i][11] = 0;
+          map[i][13] = 0;
+          map[11][i] = 0;
+          map[12][i] = 0;
+          map[13][i] = 0;
+          map[12][12] = 0;
+
+        }
+       
 
    // getTile: function(,)
   }
@@ -258,7 +269,6 @@
         oils[i].getY() < myPlayer.getY() + pixelSize &&
         oils[i].getY() + pixelSize > myPlayer.getY()
       ) {
-        //console.info("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
 
         if (dx > 0) {
           myPlayer.changeSpeedX(-movementSpeed);
