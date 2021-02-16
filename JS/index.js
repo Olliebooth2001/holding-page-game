@@ -9,19 +9,27 @@
   var cont = false;
   var myGamePiece;
   var setScale = false;
-  var translateY = -800;
-  var translateX = -800;
+  var mid = setSize/pixelSize;
+  var translateY = -225;
+  var translateX = -225;
 
   const canvas= document.getElementById("myCanvas");
   const context = canvas.getContext("2d");
+
+  context.fillStyle = "#ff0000";
+  context.fillRect(0, 0, canvas.width, canvas.height);
 
   var setSize = 900;
   canvas.width = setSize;
   canvas.height = setSize;
 
+  
 
   let playerImg = new Image();
   playerImg.src = 'images/openC.png';
+  
+  let oilSlick = new Image();
+  oilSlick.src = 'images/oil.png';
 
   let closedEye = new Image();
   closedEye.src = 'images/closeC.png';
@@ -36,7 +44,7 @@
     
     start: function() {
      
-      var createArray = setSize/pixelSize;
+      
       this.interval = setInterval(updateGameArea, 20);
       
       
@@ -63,7 +71,7 @@
     },
     moveBox: function() {
       //context.clearRect()
-     
+      oils = [];  
       walls = [];
       x = 0;
       y = 0;
@@ -77,12 +85,20 @@
             // context.fillStyle = "#5e10ec";
 
             context.drawImage(brick,x, y, pixelSize - 1, pixelSize - 1);
-          }   
+          } 
+          else if(map[i][j] == 3){
+            var myOil = new Oil(x,y);
+            oils.push(myOil);
+            context.beginPath();
+            context.drawImage(oilSlick,x, y, pixelSize - 1, pixelSize - 1);
+
+          }    
           else if(map[i][j] == 0){
             context.beginPath();
             context.drawImage(grass,x, y, pixelSize - 1, pixelSize - 1);
 
           }       
+            
           context.fill();
           x += pixelSize;
         }
@@ -166,7 +182,17 @@
           map[i][j] = 1;
           //var myWall = new Wall(i*20, j*20);
           //walls.push(myWall);
-        } else {
+        } 
+        else if(randomNumber == 3){
+          var newR = Math.floor(Math.random() * 11); 
+          if(newR == 3){
+            map[i][j] = 3;
+          }
+          else{
+            map[i][j] = 0;
+          }
+        }
+        else {
           map[i][j] = 0;
         }
         
@@ -215,7 +241,8 @@
       myScore+=seconds;
       console.log(myScore);
       document.getElementById("head2").innerHTML = "Score : " + myScore;
-
+      translateX = -225
+      translateY = -225
       seconds = 16; 
 
     }
@@ -235,15 +262,19 @@
 
         if (dx > 0) {
           myPlayer.changeSpeedX(-movementSpeed);
+          translateX += 2;
         }
         if (dx < 0) {
           myPlayer.changeSpeedX(movementSpeed);
+          translateX -= 2;
         }
         if (dy > 0) {
           myPlayer.changeSpeedY(-movementSpeed);
+          translateY += 2;
         }
         if (dy < 0) {
           myPlayer.changeSpeedY(movementSpeed);
+          translateY -= 2;
         }
       }
     }
@@ -276,6 +307,11 @@
       super(xCord, yCord);
     }
   }
+  class Oil extends Node {
+    constructor(xCord, yCord) {
+      super(xCord, yCord);
+    }
+  }
 
   class Player extends Node {
     constructor(xCord, yCord, speedX, speedY) {
@@ -302,6 +338,12 @@
     changeSpeedY(speedY) {
       this.setY(this.yCord + speedY);
     }
+    getX(){
+      return this.xCord;
+    }
+    getY(){
+      return this.yCord;
+    }
   }
 
   class Door extends Node {
@@ -315,19 +357,16 @@
 
   var tempX = pixelSize*12;//Math.floor((createArray/2));
   var tempY = pixelSize*12;//Math.floor((createArray/2));
-
+  var myPlayer = new Player(tempX, tempY, 0);
 
   function updateGameArea() {
    
     document.getElementById("head2").style.textShadow = "2px 2px 1px #5e10ec";
 
-    context.translate(myPlayer.getX()+translateX,myPlayer.getY()+translateY);
+  
     
+  
     
-    if(setScale == false){
-      context.scale(2,2);
-      setScale = true;
-    }
 
     if(seconds !=0){
       //gameMusic.play();
@@ -338,6 +377,7 @@
 
       gameSpace.moveBox();
       gameSpace.clear();
+     
       if (seconds <=5){ 
         if(seconds %2!=0){
           document.querySelector('.oft').style.display = 'flex';
@@ -353,33 +393,29 @@
 
       }
   
-      if (gameSpace.keys && gameSpace.keys[37]) {
+      if (gameSpace.keys && gameSpace.keys[37]) { //left
         myPlayer.changeSpeedX(-movementSpeed);
         collisionCheck(-movementSpeed, 0);
-        translateX -=1;
-      
-
+        translateX += 2; 
       }
-      if (gameSpace.keys && gameSpace.keys[39]) {
+      if (gameSpace.keys && gameSpace.keys[39]) { //right
         myPlayer.changeSpeedX(movementSpeed);
         collisionCheck(movementSpeed, 0);
-        translateX +=50;
-
+        translateX -= 2;
       }
-      if (gameSpace.keys && gameSpace.keys[38]) {
+      if (gameSpace.keys && gameSpace.keys[38]) { //up
         myPlayer.changeSpeedY(-movementSpeed);
         collisionCheck(0, -movementSpeed);
-        translateX +=50;
-
+        translateY += 2;
       }
-      if (gameSpace.keys && gameSpace.keys[40]) {
+      if (gameSpace.keys && gameSpace.keys[40]) { //down
         myPlayer.changeSpeedY(movementSpeed);
         collisionCheck(0, movementSpeed);
-        translateX +=50;
-
+        translateY -= 2;
       }
      
       gameSpace.moveBox();
+      context.restore();
     }
     
 
@@ -409,9 +445,19 @@
       });
       
     }
-   
+    if(setScale == false){
+      context.scale(2,2);
+      setScale = true;
+    }
+    context.save();
+    context.translate(translateX ,translateY);
+    
+
   }
-  var myPlayer = new Player(tempX, tempY, 0);
+  
+  
+  
+
   if(document.getElementById("serverStat").src == "https://bet.sbgcdn.com/static/mbet/img/content/logos/skybet-rebrand.png"){
     document.getElementById("serverSymbol").src='images/serverON.png';
   }
@@ -421,7 +467,9 @@
   
   
   gameSpace.start();
+  
 
 
 })();
+
 
