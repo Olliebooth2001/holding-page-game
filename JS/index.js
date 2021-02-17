@@ -1,37 +1,24 @@
-function showNotification(){
-  const notification = new Notification("New message from dcode!",{
-    body: "heya mate how are ya?",
-    icon: "images/maze.png"
+// function showNotification(){
+//   const notification = new Notification("New message from dcode!",{
+//     body: "heya mate how are ya?",
+//     icon: "images/maze.png"
 
-  });
-}
+//   });
+// }
 
-console.log(Notification.permission);
-if(Notification.permission === "granted"){
-    showNotification();
+// console.log(Notification.permission);
+// if(Notification.permission === "granted"){
+//     showNotification();
   
-}else if(Notification.permission!=="denied"){
-  Notification.requestPermission().then(permission=>{
-     if(permission === "granted"){
-       showNotification();
-      }
+// }else if(Notification.permission!=="denied"){
+//   Notification.requestPermission().then(permission=>{
+//      if(permission === "granted"){
+//        showNotification();
+//       }
 
-  });
-}
-
-
-
-
-
-
-
-
+//   });
+// }
 (function() {
-
-  
-
-
-
   // get the context
   var pixelSize = 36;
   var movementSpeed = 2;
@@ -47,12 +34,14 @@ if(Notification.permission === "granted"){
   var translateX = -225;
   var canvasDeficit = 300;
   var moving = false;
+  var left = false;
+  var right = false;
+  var down = false;
+
+  var coinActive = false;
+
   const canvas= document.getElementById("myCanvas");
   const context = canvas.getContext("2d");
-
-
-  context.fillStyle = "#000";
-  context.fillRect(0, 0, canvas.width, canvas.height);
 
 
   var setSize = 1350;
@@ -64,17 +53,33 @@ if(Notification.permission === "granted"){
   let playerImg = new Image();
   playerImg.src = 'images/playerFlat.png';
 
+  let Right = new Image();
+  Right.src = 'images/playerLeft.png';
+
+  let Left = new Image();
+  Left.src = 'images/playerRight.png';
+
+  let Down = new Image();
+  Down.src = 'images/playerDown.png';
+
+  let closedEye = new Image();
+  closedEye.src = 'images/closeC.png';
+
   
   let getOut = new Image();
   getOut.src = 'images/exit.png';
   let getOut2 = new Image();
   getOut2.src = 'images/exit2.png';
   
-  let oilSlick = new Image();
-  oilSlick.src = 'images/oil.png';
+  let coin1 = new Image();
+  coin1.src = 'images/coin1.png';
+  let coin2 = new Image();
+  coin2.src = 'images/coin2.png';
+  let coin3 = new Image();
+  coin3.src = 'images/coin3S.png';
 
-  let closedEye = new Image();
-  closedEye.src = 'images/closeC.png';
+
+ 
 
   let grass = new Image();
   grass.src = 'images/pixelGrass.png'
@@ -89,13 +94,18 @@ if(Notification.permission === "granted"){
      
       
       this.interval = setInterval(updateGameArea, 20);
-      
+
+      coinActive = false;
       
      
       MapGeneration();
       this.map = map;
       mySound = new sound("music/gameOver.mp3");
       gameMusic = new sound("music/thememusic1.mp3");
+      coin = new sound("music/coin.wav");
+      levelComplete = new sound("music/WinSound.wav");
+
+
   
       window.addEventListener("keydown", function(e) {
         e.preventDefault();
@@ -132,10 +142,20 @@ if(Notification.permission === "granted"){
           else if(map[i][j] == 3){
             var myOil = new Oil(x,y);
             oils.push(myOil);
-
-            context.beginPath();
-            context.drawImage(oilSlick,x + canvasDeficit, y + canvasDeficit, pixelSize - 1, pixelSize - 1);
-
+            if(!coinActive){
+              if(seconds%2==0){
+                context.beginPath();
+                context.drawImage(coin1,x + canvasDeficit, y + canvasDeficit, pixelSize - 1, pixelSize - 1);
+              }
+              else if(seconds%2==1){
+                context.beginPath();
+                context.drawImage(coin3,x + canvasDeficit, y + canvasDeficit, pixelSize - 1, pixelSize - 1);
+              }
+            }
+            else{
+              context.beginPath();
+              context.drawImage(grass,x + canvasDeficit, y  + canvasDeficit, pixelSize - 1, pixelSize - 1);
+            }
           }    
           else if(map[i][j] == 0){
             context.beginPath();
@@ -173,7 +193,6 @@ if(Notification.permission === "granted"){
         context.drawImage(closedEye,myPlayer.getX() + canvasDeficit, myPlayer.getY() + canvasDeficit, pixelSize - 4, pixelSize - 4);
         context.fill();
       }
-      
     }
   };
   function sound(src) {
@@ -239,7 +258,7 @@ if(Notification.permission === "granted"){
           //walls.push(myWall);
         } 
         else if(randomNumber == 3){
-          var newR = Math.floor(Math.random() * 11); 
+          var newR = Math.floor(Math.random() * 15); 
           if(newR == 3){
             map[i][j] = 3;
           }
@@ -306,6 +325,8 @@ if(Notification.permission === "granted"){
       translateX = -225
       translateY = -225
       seconds = 16; 
+      coinActive = false;
+      levelComplete.play();
 
     }
     for (var i = 0; i < oils.length; i++) {
@@ -322,20 +343,33 @@ if(Notification.permission === "granted"){
       ) {
 
         if (dx > 0) {
-          myPlayer.changeSpeedX(-movementSpeed);
-          translateX += 2;
+          if(coinActive == false){
+            seconds +=5;
+            coin.play();
+            coinActive = true;
+          }
+         
         }
         if (dx < 0) {
-          myPlayer.changeSpeedX(movementSpeed);
-          translateX -= 2;
+          if(coinActive == false){
+            seconds +=5;
+            coin.play();
+            coinActive = true;
+          }
         }
         if (dy > 0) {
-          myPlayer.changeSpeedY(-movementSpeed);
-          translateY += 2;
+          if(coinActive == false){
+            seconds +=5;
+            coin.play();
+            coinActive = true;
+          }
         }
         if (dy < 0) {
-          myPlayer.changeSpeedY(movementSpeed);
-          translateY -= 2;
+          if(coinActive == false){
+            seconds +=5;
+            coin.play();
+            coinActive = true;
+          }
         }
       }
     }
