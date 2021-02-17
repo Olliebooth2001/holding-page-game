@@ -141,21 +141,29 @@
           } 
           else if(map[i][j] == 3){
             var myOil = new Oil(x,y);
-            oils.push(myOil);
-            if(!coinActive){
-              if(seconds%2==0){
-                context.beginPath();
-                context.drawImage(coin1,x + canvasDeficit, y + canvasDeficit, pixelSize - 1, pixelSize - 1);
+            if(oils.length <1){
+              oils.push(myOil);
+              if(!coinActive){
+                if(seconds%2==0){
+                  context.beginPath();
+                  context.drawImage(coin1,x + canvasDeficit, y + canvasDeficit, pixelSize - 1, pixelSize - 1);
+                }
+                else if(seconds%2==1){
+                  context.beginPath();
+                  context.drawImage(coin3,x + canvasDeficit, y + canvasDeficit, pixelSize - 1, pixelSize - 1);
+                }
               }
-              else if(seconds%2==1){
+              else{
                 context.beginPath();
-                context.drawImage(coin3,x + canvasDeficit, y + canvasDeficit, pixelSize - 1, pixelSize - 1);
+                context.drawImage(grass,x + canvasDeficit, y  + canvasDeficit, pixelSize - 1, pixelSize - 1);
               }
             }
             else{
               context.beginPath();
               context.drawImage(grass,x + canvasDeficit, y  + canvasDeficit, pixelSize - 1, pixelSize - 1);
             }
+
+            
           }    
           else if(map[i][j] == 0){
             context.beginPath();
