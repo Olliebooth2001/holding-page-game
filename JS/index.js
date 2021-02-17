@@ -335,7 +335,6 @@
       seconds = 16; 
       coinActive = false;
       levelComplete.play();
-
     }
     for (var i = 0; i < oils.length; i++) {
       var myleft = myPlayer.getX();
@@ -498,10 +497,6 @@
    
     document.getElementById("head2").style.textShadow = "2px 2px 1px #5e10ec";
 
-  
-    
-  
-    
 
     if(seconds !=0){
       //gameMusic.play();
@@ -594,7 +589,7 @@
     context.save();
     context.translate(translateX - canvasDeficit, translateY - canvasDeficit);
     
-    console.log(myPlayer.getX(), myPlayer.getY());
+    //console.log(myPlayer.getX(), myPlayer.getY());
   }
   
   
