@@ -23,7 +23,7 @@
   var pixelSize = 36;
   var movementSpeed = 2;
   var myScore = 0;
-  var seconds = 500;
+  var seconds = 15;
   var mySound;
   var gameMusic;
   var cont = false;
@@ -318,9 +318,15 @@
           map[12][i] = 0;
           map[13][i] = 0;
           map[12][12] = 0;
-
-      }
+        }
        
+        if(map[12][23] == 1 || map[12][1] == 1 ||map[1][12] == 1||map[23][12] == 1){
+          map[12][23] = 4;
+          map[12][1] = 4;
+          map[1][12] = 4;
+          map[23][12] = 4;
+
+        }
 
    // getTile: function(,)
   }
@@ -349,34 +355,18 @@
   } else {
     document.getElementById('wifiSymbol').src='images/nowifi.png';
   } 
-  
-  function collisionCheck(dx, dy) {
-    
-    if(myPlayer.getX() > 850 || myPlayer.getX() < 5 ||myPlayer.getY()>850 ||myPlayer.getY()<5){
-      console.log("Out of maze");
-      MapGeneration();
-      myPlayer.setX(432);
-      myPlayer.setY(432);
-      myScore+=seconds;
-      console.log(myScore);
-      document.getElementById("head2").innerHTML = "Score : " + myScore;
-      translateX = -225
-      translateY = -225
-      seconds = 16; 
-      coinActive = false;
-      levelComplete.play();
-    }
+  function spikeCheck(dx,dy){
     for (var i = 0; i < spikes.length; i++) {
       var myleft = myPlayer.getX();
       var myright = myPlayer.getX();
       var mytop = myPlayer.getY();
       var mybottom = myPlayer.getY();
-
+      
       if (
-        spikes[i].getX() < myPlayer.getX() + pixelSize &&
-        spikes[i].getX() + pixelSize > myPlayer.getX() &&
-        spikes[i].getY() < myPlayer.getY() + pixelSize &&
-        spikes[i].getY() + pixelSize > myPlayer.getY()
+        spikes[i].getX() < myPlayer.getX() + 30 &&
+        spikes[i].getX() + 30 > myPlayer.getX() &&
+        spikes[i].getY() < myPlayer.getY() + 30 &&
+        spikes[i].getY() + 30 > myPlayer.getY()
       ) {
 
         if (dx > 0) {
@@ -405,6 +395,24 @@
         }
       }
     }
+  };
+  function collisionCheck(dx, dy) {
+    
+    if(myPlayer.getX() > 850 || myPlayer.getX() < 5 ||myPlayer.getY()>850 ||myPlayer.getY()<5){
+      console.log("Out of maze");
+      MapGeneration();
+      myPlayer.setX(432);
+      myPlayer.setY(432);
+      myScore+=seconds;
+      console.log(myScore);
+      document.getElementById("head2").innerHTML = "Score : " + myScore;
+      translateX = -225
+      translateY = -225
+      seconds = 16; 
+      coinActive = false;
+      levelComplete.play();
+    }
+    
     for (var i = 0; i < oils.length; i++) {
       var myleft = myPlayer.getX();
       var myright = myPlayer.getX() + pixelSize;
@@ -412,10 +420,10 @@
       var mybottom = myPlayer.getY() + pixelSize;
 
       if (
-        oils[i].getX() < myPlayer.getX() + pixelSize &&
-        oils[i].getX() + pixelSize > myPlayer.getX() &&
-        oils[i].getY() < myPlayer.getY() + pixelSize &&
-        oils[i].getY() + pixelSize > myPlayer.getY()
+        oils[i].getX() < myPlayer.getX() + 30 &&
+        oils[i].getX() + 30 > myPlayer.getX() &&
+        oils[i].getY() < myPlayer.getY() + 30 &&
+        oils[i].getY() + 30 > myPlayer.getY()
       ) {
 
         if (dx > 0) {
@@ -569,6 +577,8 @@
   function updateGameArea() {
    
     document.getElementById("head2").style.textShadow = "2px 2px 1px #5e10ec";
+  
+    
 
 
     if(seconds !=0){
@@ -654,14 +664,14 @@
         moving = true;
 
       }
-     
+      spikeCheck(myPlayer.getX(),myPlayer.getY());
       gameSpace.moveBox();
       context.restore();
     }
     
 
     
-    else if(seconds == 0){
+    else if(seconds <= 0){
       document.querySelector('.oft').style.display = 'none';
       gameMusic.stop();
       mySound.play();

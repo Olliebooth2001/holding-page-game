@@ -28,9 +28,9 @@ const checkOnlineStatus = async () => {
    try {
       
      const online = await fetch("1pixel.png");
-     return online.status >= 200 && online.status < 300; // either true or false
+     return online.status >= 200 && online.status < 300; 
    } catch (err) {
-     return false; // definitely offline
+     return false; 
    }
  };
 
