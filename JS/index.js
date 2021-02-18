@@ -34,9 +34,7 @@
   var translateX = -225;
   var canvasDeficit = 300;
   var moving = false;
-  var left = false;
-  var right = false;
-  var down = false;
+  var spikesActive = false;
 
   var coinActive = false;
 
@@ -64,6 +62,11 @@
 
   let closedEye = new Image();
   closedEye.src = 'images/closeC.png';
+
+  let spikeUp = new Image();
+  spikeUp.src = 'images/spikesUp.png';
+  let spikeDown = new Image();
+  spikeDown.src = 'images/spikesDown.png';
 
   
   let getOut = new Image();
@@ -96,6 +99,8 @@
       this.interval = setInterval(updateGameArea, 20);
 
       coinActive = false;
+      spikesActive = false;
+
       
      
       MapGeneration();
@@ -104,6 +109,7 @@
       gameMusic = new sound("music/thememusic1.mp3");
       coin = new sound("music/coin.wav");
       levelComplete = new sound("music/WinSound.wav");
+      spikeNoise = new sound("music/spikeNoise.mp3");
 
 
   
@@ -126,6 +132,7 @@
       //context.clearRect()
       oils = [];  
       walls = [];
+      spikes = [];
       x = 0;
       y = 0;
       for (var i = 0; i < 25; i++) {
@@ -164,7 +171,21 @@
             }
 
             
-          }    
+          }   
+          else if(map[i][j] == 4){
+            var spike = new Spikes(x,y);
+            spikes.push(spike);
+            if(seconds % 3 == 0){
+              context.beginPath();
+              context.drawImage(spikeUp,x + canvasDeficit, y + canvasDeficit, pixelSize - 1, pixelSize - 1);
+              spikesActive = true;
+            }
+            else{
+              context.beginPath();
+              context.drawImage(spikeDown,x + canvasDeficit, y + canvasDeficit, pixelSize - 1, pixelSize - 1);
+              spikesActive = false;
+            }
+          }
           else if(map[i][j] == 0){
             context.beginPath();
             context.drawImage(grass,x + canvasDeficit, y  + canvasDeficit, pixelSize - 1, pixelSize - 1);
@@ -274,13 +295,22 @@
             map[i][j] = 0;
           }
         }
+        else if(randomNumber == 4){
+          var newR = Math.floor(Math.random() * 3); 
+          if(newR == 2){
+            map[i][j] = 4;
+          }
+          else{
+            map[i][j] = 0;
+          }
+        }
         else {
           map[i][j] = 0;
         }
       }
     }
        
-         for(var i = 11;i<13;i++){
+      for(var i = 11;i<13;i++){
           map[i][12] = 0;
           map[i][11] = 0;
           map[i][13] = 0;
@@ -289,7 +319,7 @@
           map[13][i] = 0;
           map[12][12] = 0;
 
-        }
+      }
        
 
    // getTile: function(,)
@@ -336,6 +366,45 @@
       coinActive = false;
       levelComplete.play();
     }
+    for (var i = 0; i < spikes.length; i++) {
+      var myleft = myPlayer.getX();
+      var myright = myPlayer.getX();
+      var mytop = myPlayer.getY();
+      var mybottom = myPlayer.getY();
+
+      if (
+        spikes[i].getX() < myPlayer.getX() + pixelSize &&
+        spikes[i].getX() + pixelSize > myPlayer.getX() &&
+        spikes[i].getY() < myPlayer.getY() + pixelSize &&
+        spikes[i].getY() + pixelSize > myPlayer.getY()
+      ) {
+
+        if (dx > 0) {
+          if(spikesActive == true){
+            spikeNoise.play()
+            seconds = 0;
+          }
+        }
+        if (dx < 0) {
+          if(spikesActive == true){
+            spikeNoise.play()
+            seconds = 0;
+          }
+        }
+        if (dy > 0) {
+          if(spikesActive == true){
+            spikeNoise.play()
+            seconds = 0;
+          }
+        }
+        if (dy < 0) {
+          if(spikesActive == true){
+            spikeNoise.play()
+            seconds = 0;
+          }
+        }
+      }
+    }
     for (var i = 0; i < oils.length; i++) {
       var myleft = myPlayer.getX();
       var myright = myPlayer.getX() + pixelSize;
@@ -355,7 +424,6 @@
             coin.play();
             coinActive = true;
           }
-         
         }
         if (dx < 0) {
           if(coinActive == false){
@@ -442,6 +510,11 @@
     }
   }
   class Oil extends Node {
+    constructor(xCord, yCord) {
+      super(xCord, yCord);
+    }
+  }
+  class Spikes extends Node {
     constructor(xCord, yCord) {
       super(xCord, yCord);
     }
