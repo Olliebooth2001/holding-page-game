@@ -7,9 +7,9 @@
     <link rel="shortcut icon" type="image/png" href="images/skybet-logo.png"/>
     <meta charset="UTF-8">
     <title>MazeRunner</title>
-    <link href="css/desktop.css" media='screen and (min-width: 1024px) and (max-width: 3000px)' rel="stylesheet" type="text/css">
-    <link href="css/tablet.css" media='screen and (min-width: 768px) and (max-width: 1023px)' rel="stylesheet" type="text/css">
-    <link href="css/mobile.css" media='screen and (min-width: 300px) and (max-width: 767px)' rel="stylesheet" type="text/css">
+    <link href="css/desktop.css" media='only screen and (min-device-width: 1024px)' rel="stylesheet" type="text/css">
+    <link href="css/tablet.css" media='only screen and (max-device-width: 1023px)' rel="stylesheet" type="text/css">
+    <link href="css/mobile.css" media='only screen and (max-device-width: 480px)' rel="stylesheet" type="text/css">
 
     
     <style> 
@@ -74,8 +74,15 @@
       </div>
         <img id = "mazeTitle" src="images/maze.png"width = "300" height="220" />
         <canvas id="myCanvas"></canvas>
+        <div class="mobile-arrows">
+          <button class="mobile-btn-arrows" id="mobile-btn-arrow-up">UP</button>
+          <button class="mobile-btn-arrows" id="mobile-btn-arrow-down">DOWN</button>
+          <button class="mobile-btn-arrows" id="mobile-btn-arrow-left">LEFT</button>
+          <button class="mobile-btn-arrows" id="mobile-btn-arrow-right">RIGHT</button>
+        </div>
         
         <script src="JS/index.js" ></script>
+    
       
 
     </div>

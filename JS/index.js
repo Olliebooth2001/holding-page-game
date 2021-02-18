@@ -595,6 +595,37 @@
         document.querySelector('.oft').style.display = 'none';
 
       }
+
+      var btnUp = document.getElementById("mobile-btn-arrow-up");
+      var btnDown = document.getElementById('mobile-btn-arrow-down');
+      var btnLeft = document.getElementById('mobile-btn-arrow-left');
+      var btnRight = document.getElementById('mobile-btn-arrow-right');
+
+      btnUp.addEventListener("mousedown", tapOrClickUp, false);
+      btnUp.addEventListener("touchstart", tapOrClickUp, false);
+
+      btnDown.addEventListener("mousedown", tapOrClickDown, false);
+      btnDown.addEventListener("touchstart", tapOrClickDown, false);
+
+      function tapOrClickUp(event) {
+        myPlayer.changeSpeedY(-movementSpeed);
+        collisionCheck(0, -movementSpeed);
+        translateY += 2;
+        moving = true;
+
+        //event.preventDefault();
+        return false;
+      }
+
+      function tapOrClickDown(event) {
+        myPlayer.changeSpeedY(movementSpeed);
+        collisionCheck(0, movementSpeed);
+        translateY -= 2;
+        moving = true;
+
+        //event.preventDefault();
+        return false;
+      }
   
       if (gameSpace.keys && gameSpace.keys[37]) { //left
         myPlayer.changeSpeedX(-movementSpeed);

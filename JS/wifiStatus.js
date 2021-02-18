@@ -21,7 +21,6 @@ else if(Notification.permission !== "denied"){
     if(permission === "granted"){
       showNotification();
     } 
-
   });
 }
 

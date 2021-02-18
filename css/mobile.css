@@ -1,14 +1,51 @@
 #myCanvas{
-
-    width: 600px;
+    width: 700px;
     height: 700px;
     border:1px solid black;
-    background: white;
+    background: green;
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%,-50%);
     margin:0 auto;
     border-radius: 1%;
     box-shadow: 50px;
+    z-index: 1;
+}
+
+.op-modal, .bg-modal, .oft {
+    display: none;
+}
+
+.mobile-arrows {
+    display: flex;
+    position: absolute;
+    top: 70%;
+    left: 35%;
+}
+
+.mobile-btn-arrows {
+    background-color: rgb(122, 0, 236);
+    border-style: none;
+    width: 150px;
+    height: 150px;
+}
+
+#mobile-btn-arrow-up {
+    margin-left: 15rem;
+}
+
+#mobile-btn-arrow-down {
+    margin-top: 19rem;
+    margin-left: -9.5rem;
+}
+
+#mobile-btn-arrow-left {
+    margin-left: -19rem;
+    margin-top: 9.5rem;
+}
+
+#mobile-btn-arrow-right {
+    margin-left: 10rem;
+    margin-top: 9.5rem;
 }

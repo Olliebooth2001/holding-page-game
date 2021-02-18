@@ -141,6 +141,10 @@ h4{
     animation:typing 4s steps(22,end) forwards,
               blink 1s infinite;
 }
+.mobile-arrows {
+    display: none;
+}
+
 @keyframes typing {
     0% { width:0% }
     100% { width:100% }
@@ -151,6 +155,48 @@ h4{
     }
     50% {
       border-right:2px solid #222;
+    }
+}
+
+@media only screen and (max-width: 1250px) {
+    #myCanvas {
+        height: 500px;
+        width: 500px;
+    }
+}
+
+@media only screen and (max-height: 815px) {
+    #myCanvas {
+        height: 500px;
+        width: 500px;
+    }
+}
+
+@media only screen and (max-width: 1050px) {
+    #myCanvas {
+        height: 400px;
+        width: 400px;
+    }
+}
+
+@media only screen and (max-height: 725px) {
+    #myCanvas {
+        height: 400px;
+        width: 400px;
+    }
+}
+
+@media only screen and (max-width: 850px) {
+    #myCanvas {
+        height: 300px;
+        width: 300px;
+    }
+}
+
+@media only screen and (max-height: 645px) {
+    #myCanvas {
+        height: 300px;
+        width: 300px;
     }
 }
 
