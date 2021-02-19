@@ -23,7 +23,7 @@
   var pixelSize = 36;
   var movementSpeed = 2;
   var myScore = 0;
-  var seconds = 500;
+  var seconds =   15;
   var mySound;
   var gameMusic;
   var cont = false;
