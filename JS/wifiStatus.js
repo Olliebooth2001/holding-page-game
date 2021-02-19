@@ -37,12 +37,22 @@ const checkOnlineStatus = async () => {
  setInterval(async () => {
    const result = await checkOnlineStatus();
    const statusDisplay = document.getElementById("status");
-   statusDisplay.textContent = result ? "Online" : "OFFline";
- }, 3000);
+   statusDisplay.textContent = result ? "Online" : "Offline";
+   if(result == true){
+    document.getElementById("serverSymbol").style.display = "block";
+    document.getElementById("serverSymbol").src='images/serverON.png';
+
+    //document.getElementById("serverOFF").style.display = 'none';
+   }
+   else if(result == false){
+    document.getElementById("serverSymbol").style.display = 'none';
+
+   }
+ }, 8000);
 
  window.addEventListener("load", async (event) => {
    const statusDisplay = document.getElementById("status");
    statusDisplay.textContent = (await checkOnlineStatus())
      ? "Online"
-     : "OFFline";
+     : "Offline";
  });

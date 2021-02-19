@@ -229,5 +229,16 @@ h4{
     display: none;
     z-index: 0;
 }
+.sof{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
 
 
+#status{
+    font-family:  'Barlow Condensed', sans-serif;
+    letter-spacing: 0.1cm;
+    color: white;
+}

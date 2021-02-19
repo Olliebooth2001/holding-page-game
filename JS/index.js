@@ -23,7 +23,7 @@
   var pixelSize = 36;
   var movementSpeed = 2;
   var myScore = 0;
-  var seconds = 15;
+  var seconds = 500;
   var mySound;
   var gameMusic;
   var cont = false;
@@ -35,6 +35,7 @@
   var canvasDeficit = 300;
   var moving = false;
   var spikesActive = false;
+  var left = false;
 
   var coinActive = false;
 
@@ -349,12 +350,12 @@
     document.getElementById("head3").textContent ="Time : "+ seconds;
     if (seconds <= 0) clearInterval(countdown);
   }, 1000);
-  var ifConnected = window.navigator.onLine;
-  if (ifConnected) {
-    document.getElementById('wifiSymbol').src='images/wifi.png';
-  } else {
-    document.getElementById('wifiSymbol').src='images/nowifi.png';
-  } 
+  // var ifConnected = window.navigator.onLine;
+  // if (ifConnected) {
+  //   document.getElementById('wifiSymbol').src='images/wifi.png';
+  // } else {
+  //   document.getElementById('wifiSymbol').src='images/nowifi.png';
+  // } 
   function spikeCheck(dx,dy){
     for (var i = 0; i < spikes.length; i++) {
       var myleft = myPlayer.getX();
@@ -577,9 +578,7 @@
   function updateGameArea() {
    
     document.getElementById("head2").style.textShadow = "2px 2px 1px #5e10ec";
-  
-    
-
+    //document.querySelector('.oft').style.display = 'none';
 
     if(seconds !=0){
       //gameMusic.play();
@@ -587,7 +586,7 @@
         document.querySelector('.op-modal').style.display = 'none';
         cont = true;
       });
-
+     
       gameSpace.moveBox();
       gameSpace.clear();
      
@@ -606,37 +605,33 @@
 
       }
 
-      var btnUp = document.getElementById("mobile-btn-arrow-up");
-      var btnDown = document.getElementById('mobile-btn-arrow-down');
-      var btnLeft = document.getElementById('mobile-btn-arrow-left');
-      var btnRight = document.getElementById('mobile-btn-arrow-right');
-
-      btnUp.addEventListener("mousedown", tapOrClickUp, false);
-      btnUp.addEventListener("touchstart", tapOrClickUp, false);
-
-      btnDown.addEventListener("mousedown", tapOrClickDown, false);
-      btnDown.addEventListener("touchstart", tapOrClickDown, false);
-
-      function tapOrClickUp(event) {
-        myPlayer.changeSpeedY(-movementSpeed);
-        collisionCheck(0, -movementSpeed);
-        translateY += 2;
+      document.getElementById("moveUp").addEventListener("mousedown", function() {
+        myPlayer.changeSpeedY(-0.025);
+        collisionCheck(0, -0.025);
+        translateY += 0.025;
         moving = true;
-
-        //event.preventDefault();
-        return false;
-      }
-
-      function tapOrClickDown(event) {
-        myPlayer.changeSpeedY(movementSpeed);
-        collisionCheck(0, movementSpeed);
-        translateY -= 2;
+      });
+      document.getElementById("moveLeft").addEventListener("mousedown", function() {
+        myPlayer.changeSpeedX(-0.025);
+        collisionCheck(-0.025, 0);
+        translateX += 0.025; 
         moving = true;
+      });
+      document.getElementById("moveRight").addEventListener("mousedown", function() {
+        myPlayer.changeSpeedX(0.025);
+        collisionCheck(0.025, 0);
+        translateX -= 0.025;
+        moving = true;
+      },450);
+      document.getElementById("moveDown").addEventListener("mousedown", function() {
+        myPlayer.changeSpeedY(0.025);
+        collisionCheck(0, 0.025);
+        translateY -= 0.025;
+        moving = true;
+      },450);
 
-        //event.preventDefault();
-        return false;
-      }
-  
+     
+
       if (gameSpace.keys && gameSpace.keys[37]) { //left
         myPlayer.changeSpeedX(-movementSpeed);
         collisionCheck(-movementSpeed, 0);
@@ -671,8 +666,9 @@
     
 
     
-    else if(seconds <= 0){
+    else if(seconds == 0){
       document.querySelector('.oft').style.display = 'none';
+
       gameMusic.stop();
       mySound.play();
       document.querySelector('.bg-modal').style.display = 'flex';
